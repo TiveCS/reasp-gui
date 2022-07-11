@@ -57,8 +57,8 @@ public class ItemComponentObject {
     }
 
     public void updateState(String key, Object value){
-        objectStates.put(key, value);
         if (checkStateIsUpdated(key, value)) updateItem();
+        objectStates.put(key, value);
     }
 
     private boolean checkStateIsUpdated(String key, Object value){
