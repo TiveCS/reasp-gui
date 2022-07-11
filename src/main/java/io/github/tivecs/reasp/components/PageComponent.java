@@ -12,7 +12,7 @@ public class PageComponent extends Component {
     private final HashMap<String, ItemComponent> itemComponents = new HashMap<>();
     private final HashMap<Character, String> componentMap = new HashMap<>();
 
-    private final List<String> mapping;
+    private final List<char[]> mapping;
     
     public PageComponent(int minPage, int maxPage) {
         this.minPage = minPage;
@@ -20,13 +20,18 @@ public class PageComponent extends Component {
         this.mapping = new ArrayList<>();
     }
 
-    public PageComponent(int minPage, int maxPage, List<String> mapping) {
+    public PageComponent(int minPage, int maxPage, List<char[]> mapping) {
         this.minPage = minPage;
         this.maxPage = maxPage;
         this.mapping = mapping;
     }
 
     public PageComponent addMapping(String map){
+        mapping.add(map.toCharArray());
+        return this;
+    }
+
+    public PageComponent addMapping(char[] map){
         mapping.add(map);
         return this;
     }
@@ -49,7 +54,7 @@ public class PageComponent extends Component {
         return itemComponents.get(getComponentId(mapAddress));
     }
 
-    public List<String> getMapping() {
+    public List<char[]> getMapping() {
         return mapping;
     }
 

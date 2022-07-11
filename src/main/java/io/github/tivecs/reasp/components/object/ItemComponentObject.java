@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class ItemComponentObject {
 
@@ -20,9 +21,12 @@ public class ItemComponentObject {
     private final ItemStack templateItem;
     private ItemStack item = null;
 
-    public ItemComponentObject(ItemComponent component, MenuObject menuObject) {
+    private final int slot;
+
+    public ItemComponentObject(ItemComponent component, MenuObject menuObject, int slot) {
         this.component = component;
         this.menuObject = menuObject;
+        this.slot = slot;
         objectStates.putAll(component.getStates());
 
         this.templateItem = prepareTemplate();
@@ -48,8 +52,8 @@ public class ItemComponentObject {
     }
 
     public void updateItem(){
-        // TODO Update item when state is updated
         this.item = templateItem.clone();
+        menuObject.getInventory().setItem(slot, this.item);
     }
 
     public void updateState(String key, Object value){
@@ -58,7 +62,8 @@ public class ItemComponentObject {
     }
 
     private boolean checkStateIsUpdated(String key, Object value){
-        return !objectStates.get(key).equals(value);
+        Object found = objectStates.get(key);
+        return !Objects.equals(found, value);
     }
 
     public ItemStack getItem() {
@@ -71,6 +76,14 @@ public class ItemComponentObject {
 
     public Object getState(String key){
         return objectStates.get(key);
+    }
+
+    public int getSlot() {
+        return slot;
+    }
+
+    public Object getStateOrDefault(String key, Object defaultValue){
+        return objectStates.getOrDefault(key, defaultValue);
     }
 
     public ItemComponent getComponent() {

@@ -20,6 +20,8 @@ public class MenuObject {
 
     private int currentPage = 1;
 
+    private PageComponent currentPageComponent = null;
+
     private Inventory inventory = null;
 
     private final HashMap<Integer, ItemComponentObject> objectMap = new HashMap<>();
@@ -33,17 +35,17 @@ public class MenuObject {
         if (pc == null) throw new NullPointerException("PageComponent on page " + page + " is not found!");
 
         objectMap.clear();
+        this.currentPageComponent = pc;
         renderPageComponents(pc);
     }
 
     public void renderPageComponents(PageComponent pageComponent){
-        List<String> mapping = pageComponent.getMapping();
+        List<char[]> mapping = pageComponent.getMapping();
         int rows = mapping.size();
         this.inventory = Bukkit.createInventory(null, rows*9);
 
         for (int row = 0; row < mapping.size(); row++) {
-            String mapString = mapping.get(row);
-            char[] maps = mapString.toCharArray();
+            char[] maps = mapping.get(row);
 
             for (int i = 0; i < maps.length; i++) {
                 char address = maps[i];
@@ -52,11 +54,10 @@ public class MenuObject {
                 if (itemComponent == null) continue;
 
                 int slot = row*9 + i;
-                ItemComponentObject itemObject = new ItemComponentObject(itemComponent, this);
-                itemObject.updateItem();
+                ItemComponentObject itemObject = new ItemComponentObject(itemComponent, this, slot);
 
                 objectMap.put(slot, itemObject);
-                this.inventory.setItem(slot, itemObject.getItem());
+                itemObject.updateItem();
             }
         }
     }
@@ -73,6 +74,10 @@ public class MenuObject {
                 .findFirst();
 
         return optional.orElse(null);
+    }
+
+    public ItemComponentObject getItemObjectAtSlot(int slot){
+        return objectMap.get(slot);
     }
 
     public int getCurrentPage() {

@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class ReaspManager {
 
@@ -13,8 +14,13 @@ public class ReaspManager {
 
     private final HashMap<String, Menu> menus = new HashMap<>();
 
+    private final ReaspEventListener eventListener;
+
+    private final HashMap<UUID, MenuObject> playerMenuActivity = new HashMap<>();
+
     public ReaspManager(JavaPlugin plugin) {
         this.plugin = plugin;
+        this.eventListener = new ReaspEventListener(this);
     }
 
     public void addMenu(Menu... menus){
@@ -30,7 +36,17 @@ public class ReaspManager {
         mo.renderPage(page);
         player.openInventory(mo.getInventory());
 
+        playerMenuActivity.put(player.getUniqueId(), mo);
+
         return mo;
+    }
+
+    public HashMap<UUID, MenuObject> getPlayerMenuActivity() {
+        return playerMenuActivity;
+    }
+
+    public ReaspEventListener getEventListener() {
+        return eventListener;
     }
 
     public JavaPlugin getPlugin() {
