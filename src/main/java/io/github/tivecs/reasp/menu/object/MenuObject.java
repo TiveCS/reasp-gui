@@ -7,6 +7,7 @@ import io.github.tivecs.reasp.components.object.ItemComponentObject;
 import io.github.tivecs.reasp.menu.Menu;
 import io.github.tivecs.reasp.utils.Validator;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
@@ -67,6 +68,11 @@ public class MenuObject {
         renderPage(newPage);
     }
 
+    public void open(Player player, int page){
+        movePage(page);
+        player.openInventory(inventory);
+    }
+
     public PageComponent getPageComponent(int page){
         MenuComponent mc = menu.getMenuComponent();
         Optional<PageComponent> optional = mc.getPageComponents().stream()
@@ -82,6 +88,10 @@ public class MenuObject {
 
     public int getCurrentPage() {
         return currentPage;
+    }
+
+    public PageComponent getCurrentPageComponent() {
+        return currentPageComponent;
     }
 
     public Inventory getInventory() {

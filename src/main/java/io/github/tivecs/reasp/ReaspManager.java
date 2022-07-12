@@ -33,8 +33,7 @@ public class ReaspManager {
         Menu menu = getMenus().get(menuId);
         MenuObject mo = new MenuObject(menu);
 
-        mo.renderPage(page);
-        player.openInventory(mo.getInventory());
+        mo.open(player, page);
 
         playerMenuActivity.put(player.getUniqueId(), mo);
 
