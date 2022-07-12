@@ -1,7 +1,6 @@
 package io.github.tivecs.reasp.components.object;
 
 import io.github.tivecs.reasp.components.ItemComponent;
-import io.github.tivecs.reasp.menu.Menu;
 import io.github.tivecs.reasp.menu.object.MenuObject;
 import io.github.tivecs.reasp.utils.StringUtils;
 import org.bukkit.Material;
@@ -20,6 +19,8 @@ public class ItemComponentObject {
 
     private final ItemStack templateItem;
     private ItemStack item = null;
+
+    private boolean isVisible = true;
 
     private final int slot;
 
@@ -53,17 +54,29 @@ public class ItemComponentObject {
 
     public void updateItem(){
         this.item = templateItem.clone();
-        menuObject.getInventory().setItem(slot, this.item);
+        if (isVisible) {
+            menuObject.getInventory().setItem(slot, this.item);
+        }
     }
 
     public void updateState(String key, Object value){
-        if (checkStateIsUpdated(key, value)) updateItem();
+        boolean isUpdated = checkStateIsUpdated(key, value);
         objectStates.put(key, value);
+        if (isUpdated) updateItem();
     }
 
     private boolean checkStateIsUpdated(String key, Object value){
         Object found = objectStates.get(key);
         return !Objects.equals(found, value);
+    }
+
+    public void setVisible(boolean visible) {
+        if (visible){
+            menuObject.getInventory().setItem(slot, item);
+        }else{
+            menuObject.getInventory().clear(slot);
+        }
+        this.isVisible = visible;
     }
 
     public ItemStack getItem() {
@@ -92,5 +105,9 @@ public class ItemComponentObject {
 
     public MenuObject getMenuObject() {
         return menuObject;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
     }
 }

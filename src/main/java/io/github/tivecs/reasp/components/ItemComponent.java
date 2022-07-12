@@ -1,5 +1,6 @@
 package io.github.tivecs.reasp.components;
 
+import io.github.tivecs.reasp.components.object.ItemComponentObject;
 import org.bukkit.Material;
 
 import java.util.List;
@@ -12,6 +13,8 @@ public class ItemComponent extends Component {
     private final Material material;
 
     private List<String> lore = null;
+
+    private ComponentAction<ItemComponentObject> action = null;
 
     public ItemComponent(String id, String displayName, int amount, Material material, List<String> lore) {
         this.id = id;
@@ -45,6 +48,10 @@ public class ItemComponent extends Component {
         this.material = material;
     }
 
+    public void setAction(ComponentAction<ItemComponentObject> action) {
+        this.action = action;
+    }
+
     public String getId() {
         return id;
     }
@@ -63,6 +70,10 @@ public class ItemComponent extends Component {
 
     public Material getMaterial() {
         return material;
+    }
+
+    public ComponentAction<ItemComponentObject> getAction() {
+        return action;
     }
 
     @Override
