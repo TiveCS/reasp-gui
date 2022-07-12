@@ -7,6 +7,8 @@ public class Menu {
     private final String id;
     private final MenuComponent menuComponent;
 
+    private String title = null;
+
     private MenuAction menuAction = null;
 
     public Menu(String id) {
@@ -18,8 +20,16 @@ public class Menu {
         this.menuAction = menuAction;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public MenuAction getMenuAction() {
         return menuAction;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public String getId() {

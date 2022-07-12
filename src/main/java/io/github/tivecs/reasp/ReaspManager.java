@@ -29,15 +29,10 @@ public class ReaspManager {
         }
     }
 
-    public MenuObject open(Player player, String menuId, int page){
+    public void open(Player player, String menuId, int page){
         Menu menu = getMenus().get(menuId);
-        MenuObject mo = new MenuObject(menu);
-
+        MenuObject mo = new MenuObject(this, menu);
         mo.open(player, page);
-
-        playerMenuActivity.put(player.getUniqueId(), mo);
-
-        return mo;
     }
 
     public HashMap<UUID, MenuObject> getPlayerMenuActivity() {
